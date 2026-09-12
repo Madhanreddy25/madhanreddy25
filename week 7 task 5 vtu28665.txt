@@ -1,0 +1,88 @@
+class MyHashSet {
+
+    private static class Node {
+        int key;
+        Node next;
+
+        Node(int key) {
+            this.key = key;
+        }
+    }
+
+    private final int SIZE = 1009;
+    private Node[] buckets;
+
+    public MyHashSet() {
+        buckets = new Node[SIZE];
+    }
+
+    private int hash(int key) {
+        return key % SIZE;
+    }
+
+    public void add(int key) {
+        int index = hash(key);
+
+        Node current = buckets[index];
+
+        // Check if key already exists
+        while (current != null) {
+            if (current.key == key) {
+                return;
+            }
+            current = current.next;
+        }
+
+        // Add new key at the beginning
+        Node newNode = new Node(key);
+        newNode.next = buckets[index];
+        buckets[index] = newNode;
+    }
+
+    public void remove(int key) {
+        int index = hash(key);
+
+        Node current = buckets[index];
+        Node previous = null;
+
+        while (current != null) {
+            if (current.key == key) {
+
+                if (previous == null) {
+                    buckets[index] = current.next;
+                } else {
+                    previous.next = current.next;
+                }
+
+                return;
+            }
+
+            previous = current;
+            current = current.next;
+        }
+    }
+
+    public boolean contains(int key) {
+        int index = hash(key);
+
+        Node current = buckets[index];
+
+        while (current != null) {
+            if (current.key == key) {
+                return true;
+            }
+            current = current.next;
+        }
+
+        return false;
+    }
+}
+
+
+nput
+["MyHashSet","add","add","add","remove","contains","add","add","add","remove","contains","add","add","add","remove","contains","add","add","add","remove","contains"]
+[[],[1],[10001],[1],[1],[1],[7],[10007],[7],[7],[7],[123],[10123],[123],[123],[123],[5000],[15000],[5000],[5000],[5000]]
+Output
+[null,null,null,null,null,false,null,null,null,null,false,null,null,null,null,false,null,null,null,null,false]
+Expected
+[null,null,null,null,null,false,null,null,null,null,false,null,null,null,null,false,null,null,null,null,false]
